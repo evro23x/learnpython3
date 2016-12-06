@@ -13,3 +13,4 @@ while True:
     print('Return value is: {}'.format(str_check(string1, string2)))
     if string2 == "exit":
         break
+
