@@ -3,6 +3,7 @@ dialog = {"привет": "И тебе привет!", "как дела": "Лу�
 
 def get_answer(key):
     return dialog.get(key)
+
 while True:
     user_answer = (input("say anything: ").lower())
     print(get_answer(user_answer))

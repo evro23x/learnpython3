@@ -11,8 +11,9 @@ def find_person(person_list, person_name):
         if i == len(person_list):
             print("{} не нашелся".format(person_name))
 
-find_person(people, "Валера")
-find_person(people, "Паша")
+if __name__ == "__main__":
+    find_person(people, "Валера")
+    find_person(people, "Паша")
 
 dialog = {"как дела?": "Хорошо",
           "как погода?": "Обожаю метель",
@@ -35,6 +36,7 @@ def ask_user():
 
 def get_answer(response):
     return dialog.get(response, "не понимаю, всмысле?")
-  
-ask_user()
+
+if __name__ == "__main__":
+    ask_user()
 
