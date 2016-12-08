@@ -1,2 +1,2 @@
-# Python: research and develop repo
+# Python: research and develop 
 Course lectures and practicals learn.python.ru
