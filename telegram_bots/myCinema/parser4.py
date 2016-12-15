@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-import re
+
 
 # получаем контент страницы
 html_doc = urlopen('https://www.afisha.ru/msk/cinema/').read()
@@ -10,9 +10,14 @@ soup = BeautifulSoup(html_doc, "lxml")
 for li in soup.find('ul', {'class': 'b-dropdown-common-fixed'}).findAll('li'):
     # ссылка на метро формата - //www.afisha.ru/msk/cinema/cinema_list/aviamotornaya/
     # print(li.find('a')['href'])
-    # название метро - Авиамоторная
-    print("Станция метро: {}".format(li.find('a').contents[0]))
+
     # link_to_metro = li.find('a')['href']
+    # название метро - Авиамоторная
+    note1 = "Станция метро: " + str(li.find('a').contents[0]) + "\n"
+    f = open("parsed_information", "a")
+    f.write(note1)
+    f.close()
+
     metro_to_cinema = BeautifulSoup(urlopen('https:' + li.find('a')['href']).read(), 'lxml')
     # парсим страницу с указанием привязки кт к станции метро
     for div_cinema in metro_to_cinema.find('div', {'class': 'b-places-list'}).findAll('h3'):
@@ -20,8 +25,12 @@ for li in soup.find('ul', {'class': 'b-dropdown-common-fixed'}).findAll('li'):
         # ссылка на кт формата - //www.afisha.ru/msk/cinema/34317/
         # print(div_cinema.find('a')['href'])
         # название кт - Летний кт на ВДНХ
-        print("")
-        print("Название кинотеатра: {}".format(div_cinema.find('a').contents[0]))
+        note1 = "Название кинотеатра: " + str(div_cinema.find('a').contents[0]) + "\n"
+        f = open("parsed_information", "a")
+        f.write(note1)
+        f.close()
+
+        print("Парсим - {}".format(note1))
 
         # собираем правильную ссылку на рассписание кт с учетом его id
         pattern_url_table = 'https://www.afisha.ru/msk/schedule_cinema_place/'
@@ -34,6 +43,7 @@ for li in soup.find('ul', {'class': 'b-dropdown-common-fixed'}).findAll('li'):
         # if div_cinema.find('a').contents[0] == "Спутник":
         #     exit(0)
 
+        film_name_saver = ""
         # проверка необходима чтобы парсер на валился на 3D фильмах
         try:
             # парсим фильмы и сеансы со страницы определенного кт
@@ -54,19 +64,34 @@ for li in soup.find('ul', {'class': 'b-dropdown-common-fixed'}).findAll('li'):
                     else:
                         session_list.append(session_clear)
                 if str(div_film.find('span', {'class': 'title'})).find("Сеансы в формате") == 20 and str(div_film.find('div', {'class': 'clearfix'})) == "None":
-                    print("Название фильма неизвестно: {} ".
-                          format(session_list))
-                else:
-                    print("Название фильма: {} - {}".
-                          format(div_film.find('div', {'class': 'clearfix'}).find('a').contents[0],
-                                 session_list))
+                    # film_name_saver = str(div_film.find('div', {'class': 'clearfix'}).find('a').contents[0])
+                    session_list.remove("Сеансывформате")
 
+                    # print("Название фильма: {} в формате 3D - {}".format(film_name_saver, session_list))
+                    note1 = "Название фильма: " + film_name_saver + "в формате 3D - "
+                    note2 = str(session_list) + "\n"
+                    f = open("parsed_information", "a")
+                    f.write(note1)
+                    f.write(note2)
+                    f.close()
+
+                    # film_name_saver = ""
+                else:
+                    film_name_saver = str(div_film.find('div', {'class': 'clearfix'}).find('a').contents[0])
+                    # print("Название фильма: {} - {}".format(film_name_saver, session_list))
+                    note1 = "Название фильма: " + film_name_saver + " - "
+                    note2 = str(session_list) + "\n"
+                    f = open("parsed_information", "a")
+                    f.write(note1)
+                    f.write(note2)
+                    f.close()
                     # if str(div_film.find('div', {'class': 'clearfix'})) == "None":
-                    #     print("==================================================================== start")
-                    #     print(div_film)
-                    # print("---- {}".format(str(div_film.find('div', {'class': 'clearfix'}))))
-                    # print(str(div_film.find('span', {'class': 'title'})).find("Сеансы в формате"))
-                    # print("====================================================================   end")
+                # print("==================================================================== start")
+                # print(film_name_saver)
+                #     print(div_film)
+                # print("---- {}".format(str(div_film.find('div', {'class': 'clearfix'}))))
+                # print(str(div_film.find('span', {'class': 'title'})).find("Сеансы в формате"))
+                # print("====================================================================   end")
                 # разбираем верстку, удаляя лишний html и спец_символы
 
         except AttributeError:
