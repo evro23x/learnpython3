@@ -1,6 +1,5 @@
 import operator
 
-# from telegram import InlineKeyboardButton,InlineKeyboardMarkup
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -25,24 +24,7 @@ def show_error(bot, update, error):
     print('Update "{}" caused error "{}"'.format(update, error))
 
 
-def test1(bot, update):
-    keyboard = [[KeyboardButton('/start'), KeyboardButton('/wordcount сколько слов')],
-                [KeyboardButton('/next_new_moon'), KeyboardButton('/prev_full_moon')],
-                [KeyboardButton('/живой котик')],
-                ]
-    reply_markup = ReplyKeyboardMarkup(keyboard)
-    bot.sendMessage(update.message.chat_id, text='Чего изволите?', reply_markup=reply_markup)
-
-
 def calculator(bot, update):
-
-    # content_type, chat_type, chat_id = telepot.glance(msg)
-
-    # keyboard = InlineKeyboardMarkup(inline_keyboard=[
-    #                [InlineKeyboardButton(text='Press me', callback_data='press')],
-    #            ])
-
-    # bot.sendMessage(update.message.chat_id, 'Use inline keyboard', reply_markup=keyboard)
 
     keyboard = [[KeyboardButton('1'), KeyboardButton('2'), KeyboardButton('3'), KeyboardButton('*')],
                 [KeyboardButton('4'), KeyboardButton('5'), KeyboardButton('6'), KeyboardButton('÷')],
@@ -82,21 +64,12 @@ def calculator(bot, update):
     # operation_result = apply_operation(operation_sign, operands)
     # send_reply(operation_result)
 
-    # print(update.message.text[6:])
-    # bot.sendMessage(update.message.chat_id, text=update.message.text[6:])
-
-    # amount_of_words = len(update.message.text.split())-1
-    # if amount_of_words > 0:
-    #     bot.sendMessage(update.message.chat_id, text=amount_of_words)
-
-
 def main():
     updater = Updater("317888874:AAE8I5_laMUuF1SPN7wrk2TVZgLzDSuWVXg")
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(CommandHandler("wordcount", word_counter))
     dp.add_handler(MessageHandler([Filters.text], calculator))
-    # dp.add_handler(MessageHandler([Filters.text], test1))
     dp.add_error_handler(show_error)
     updater.start_polling()
     updater.idle()
