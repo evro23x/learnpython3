@@ -25,7 +25,16 @@ def show_error(bot, update, error):
     print('Update "{}" caused error "{}"'.format(update, error))
 
 
-def talk_to_me(bot, update):
+def test1(bot, update):
+    keyboard = [[KeyboardButton('/start'), KeyboardButton('/wordcount сколько слов')],
+                [KeyboardButton('/next_new_moon'), KeyboardButton('/prev_full_moon')],
+                [KeyboardButton('/живой котик')],
+                ]
+    reply_markup = ReplyKeyboardMarkup(keyboard)
+    bot.sendMessage(update.message.chat_id, text='Чего изволите?', reply_markup=reply_markup)
+
+
+def calculator(bot, update):
 
     # content_type, chat_type, chat_id = telepot.glance(msg)
 
@@ -35,21 +44,12 @@ def talk_to_me(bot, update):
 
     # bot.sendMessage(update.message.chat_id, 'Use inline keyboard', reply_markup=keyboard)
 
-    # keyboard = [[KeyboardButton('1'), KeyboardButton('2'), KeyboardButton('3'), KeyboardButton('*')],
-    #             [KeyboardButton('4'), KeyboardButton('5'), KeyboardButton('6'), KeyboardButton('÷')],
-    #             [KeyboardButton('7'), KeyboardButton('8'), KeyboardButton('9'), KeyboardButton('+')],
-    #             [KeyboardButton('='), KeyboardButton('0'), KeyboardButton('.'), KeyboardButton('-')]
-    #             ]
-
-    keyboard = [
-        ['7', '8', '9'],
-        ['4', '5', '6'],
-        ['1', '2', '3'],
-        ['0']
-    ]
-
-    reply_markup = ReplyKeyboardMarkup.create(keyboard)
-    bot.send_message(12345678, 'testing reply_markup', reply_markup=reply_markup)
+    keyboard = [[KeyboardButton('1'), KeyboardButton('2'), KeyboardButton('3'), KeyboardButton('*')],
+                [KeyboardButton('4'), KeyboardButton('5'), KeyboardButton('6'), KeyboardButton('÷')],
+                [KeyboardButton('7'), KeyboardButton('8'), KeyboardButton('9'), KeyboardButton('+')],
+                [KeyboardButton('='), KeyboardButton('0'), KeyboardButton('.'), KeyboardButton('-')]
+                ]
+    reply_markup = ReplyKeyboardMarkup(keyboard)
 
     available_signs = '+-:/*'
     operations_dict = {
@@ -69,13 +69,13 @@ def talk_to_me(bot, update):
             break
 
     if operation_sign is None:
-        bot.sendMessage(update.message.chat_id, text='Непонятное действие, я умею только такие: +-:*')
+        bot.sendMessage(update.message.chat_id, text='Непонятное действие, я умею только такие: +-:*', reply_markup=reply_markup)
     elif operation_sign == ':' or operation_sign == '/' and data_from_user[-1] == '0':
-        bot.sendMessage(update.message.chat_id, text='Не умею делить на ноль.')
+        bot.sendMessage(update.message.chat_id, text='Не умею делить на ноль.', reply_markup=reply_markup)
     else:
         data = data_from_user.split(operation_sign)
         result = operations_dict[operation_sign](int(data[0]), int(data[1]))
-        bot.sendMessage(update.message.chat_id, text=result)
+        bot.sendMessage(update.message.chat_id, text=result, reply_markup=reply_markup)
 
     # operation_sign = get_operation_sign(data_from_user)
     # operands = get_operands(data_from_user, operation_sign)
@@ -95,7 +95,8 @@ def main():
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(CommandHandler("wordcount", word_counter))
-    dp.add_handler(MessageHandler([Filters.text], talk_to_me))
+    dp.add_handler(MessageHandler([Filters.text], calculator))
+    # dp.add_handler(MessageHandler([Filters.text], test1))
     dp.add_error_handler(show_error)
     updater.start_polling()
     updater.idle()
