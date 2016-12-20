@@ -26,5 +26,5 @@ while True:
     ad1 = int(dict_words.get(user_answer.split()[0]))
     ad2 = int(dict_words.get(user_answer.split()[2]))
     print(dict_actions.get(user_answer.split()[1])(ad1, ad2))
-    if user_answer == "qwe":
+    if user_answer == "exit":
         break
