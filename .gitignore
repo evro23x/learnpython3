@@ -1,5 +1,6 @@
 lp3/
 .DS_Store
+__pycache__/
 telegram_bots/.DS_Store
 telegram_bots/myCinema/.DS_Store
 telegram_bots/myCinema/parsed_information*
