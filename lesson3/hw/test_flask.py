@@ -18,6 +18,11 @@ def index():
     return result
 
 
+@app.route("/news/<int:news_id>")
+def news_by_id(news_id):
+    return 'News: ' + news_id
+
+
 if __name__ == "__main__":
     app.run(port=5010, debug=True)
 
