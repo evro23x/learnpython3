@@ -1,10 +1,10 @@
-from flask import Flask
+from flask import Flask, request, abort
 from get_data_from_url import get_weather
 
 app = Flask(__name__)
 
 
-@app.route("/names")
+@app.route("/")
 def index():
     data = get_weather("http://api.data.mos.ru/v1/datasets/2009/rows")
     result = '<table><tr><th>Year</th><th>Month</th><th>Name</th></tr>'
@@ -18,9 +18,26 @@ def index():
     return result
 
 
+@app.route("/names")
+def get_all_kids():
+    data = get_weather("http://api.data.mos.ru/v1/datasets/2009/rows")
+    for item in request.args:
+        if item == "year":
+            result = '<table><tr><th>Year</th><th>Month</th><th>Name</th></tr>'
+            print(request.args.get(item))
+            for x in data:
+                if x["Cells"]["Year"] == int(request.args.get(item)):
+                    cells_year = str(x["Cells"]["Year"])
+                    cells_month = str(x["Cells"]["Month"])
+                    cells_name = str(x["Cells"]["Name"])
+                    result += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(cells_year, cells_month, cells_name)
+            result += "</table>"
+    return result
+
+
 @app.route("/news/<int:news_id>")
 def news_by_id(news_id):
-    return 'News: ' + news_id
+    return 'News: %s' % news_id
 
 
 if __name__ == "__main__":
