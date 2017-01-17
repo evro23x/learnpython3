@@ -1,5 +1,6 @@
 import ephem
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from config import api_key
 
 
 def new_moon(bot, update):
@@ -29,7 +30,7 @@ def new_moon(bot, update):
 
 
 def main():
-    updater = Updater("317888874:AAE8I5_laMUuF1SPN7wrk2TVZgLzDSuWVXg")
+    updater = Updater(api_key)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", new_moon))
     dp.add_handler(MessageHandler([Filters.text], new_moon))

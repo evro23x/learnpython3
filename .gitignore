@@ -6,3 +6,4 @@ telegram_bots/.DS_Store
 telegram_bots/myCinema/.DS_Store
 telegram_bots/myCinema/parsed_information*
 telegram_bots/myCinema/tbot_my_cinema/
+config.py

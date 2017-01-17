@@ -1,6 +1,7 @@
 import towns_game_function as func
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from config import api_key
 
 
 def start(bot, update):
@@ -25,7 +26,7 @@ def new_game(bot, update):
 
 
 def main():
-    updater = Updater("317888874:AAE8I5_laMUuF1SPN7wrk2TVZgLzDSuWVXg")
+    updater = Updater(api_key)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(MessageHandler([Filters.text], new_game))

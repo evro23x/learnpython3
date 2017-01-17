@@ -2,6 +2,7 @@ import operator
 
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from config import api_key
 
 
 def greet_user(bot, update):
@@ -66,7 +67,7 @@ def calculator(bot, update):
 
 
 def main():
-    updater = Updater("317888874:AAE8I5_laMUuF1SPN7wrk2TVZgLzDSuWVXg")
+    updater = Updater(api_key)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(MessageHandler([Filters.text], calculator))
